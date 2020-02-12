@@ -1,21 +1,27 @@
-# Magic Set Editor
+# Magic Set Editor for Mac
 
 ## About
 
-Magic Set Editor is a tool that can be used to create custom Magic the Gathering cards.
+Magic Set Editor is a tool that can be used to create custom Magic the Gathering cards, originally located on [SourceForge](http://magicseteditor.sourceforge.net).
 
-It was originally located on [SourceForge](http://magicseteditor.sourceforge.net), but this fork is meant to be a modernization.
+The goal of this project is to modify the existing source code to run on MacOS in addition to Windows and Linux systems, which are already supported.
+
+## Building
+
+First, install the dependencies. You can build these from source, but installing with Homebrew is probably easier.
+```bash
+brew install wxwidgets boost hunspell
+```
+Build the project with `cmake`. To generate Xcode project files, use:
+```bash
+cmake -G Xcode .
+```
 
 ## Changes
 
-Currently, the big changes from the original version are mainly behind the scenes:
-
-- Uses [CMake](http://cmake.org) instead of separate build systems
-- Allows installing into any directory
-- Native Linux build
-- Uses C++11 instead of Boost where possible
-
-Future plans involve going through the codebase, attempting to fix some of the known issues and enhance portability.
+ - The `wxDialUpManager` isn't implemented on Mac, so the `only when connected` setting for checking for updates will behave identically to the `always` setting (`gui/update_checker.cpp:134`).
+ - The `wxZipInputStream(const wxString&, const wxString&)` constructor has been removed, and so seeking has to be performed manually (`util/io/package.cpp:228`).
+ - The wxString `begin` and `end` functions seem to return a `wxUniCharRef` type, whcih isn't compatible with various string iterator operations. To resolve this wxStrings are converted to `std::string`s when necessary, then converted back once the operation is complete.
 
 ## Dependencies
 
@@ -23,8 +29,3 @@ Future plans involve going through the codebase, attempting to fix some of the k
 - [wxWidgets](http://wxwidgets.org/)
 - [Hunspell](http://hunspell.sourceforge.net/)
 
-## Disclaimer
-
-I don't claim to know what I'm doing.
-
-I'm partially doing this as a university project, an independant study in code modernization.
