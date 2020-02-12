@@ -47,11 +47,13 @@
 			/// Format a replacement string
 			inline String format(const String& format) const {
 				std::basic_string<Char> fmt(format.begin(),format.end());
-				String output;
-				boost::match_results<String::const_iterator>::format(
-					std::insert_iterator<String>(output, output.end()),
+				std::string output;
+				// String output;
+				auto matcher = boost::match_results<std::string::const_iterator>();
+				matcher.format(
+					std::insert_iterator<std::string>(output, output.end()),
 					fmt, boost::format_sed);
-				return output;
+				return wxString(output);
 			}
 		};
 		

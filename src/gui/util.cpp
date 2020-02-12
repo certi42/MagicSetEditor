@@ -147,7 +147,7 @@ Image load_resource_image(const String& name) {
 		int len = ::SizeofResource(wxGetInstance(), hResource);
 		wxMemoryInputStream stream(data, len);
 		return wxImage(stream);
-	#elif defined(__linux__)
+	#elif defined(__linux__) || defined(__WXMAC__)
 		static String path = getDataDir() + _("/resource/");
 		String file = path + name;
 		wxImage resource;
@@ -167,6 +167,7 @@ Image load_resource_image(const String& name) {
 	#else
 		#error Handling of resource loading needs to be declared.
 	#endif
+	return wxImage();
 }
 
 wxCursor load_resource_cursor(const String& name) {

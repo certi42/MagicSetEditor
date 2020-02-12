@@ -27,7 +27,7 @@ String decodeUTF8BOM(const String& s) {
 		wxWCharBuffer buf = s.wc_str(wxConvUTF8);
 		if (buf && buf[size_t(0)] == L'\xFEFF') {
 			// skip byte-order-mark
-			return String(buf + 1, *wxConvCurrent);
+			return String(*(&buf + 1), *wxConvCurrent);
 		} else {
 			return String(buf,     *wxConvCurrent);
 		}
@@ -212,7 +212,7 @@ String name_to_caption(const String& str) {
 	String ret;
 	ret.reserve(str.size());
 	bool leading = true;
-	for(const auto& c : str) {
+	for(const Char& c : str) {
 		if ((c == _('_') || c == _(' '))) {
 			ret += leading ? c : _(' ');
 		} else {

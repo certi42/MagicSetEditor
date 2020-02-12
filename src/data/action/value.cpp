@@ -185,7 +185,9 @@ void TextToggleReminderAction::perform(bool to_undo) {
 	String val = value.value->toString();
 	assert(pos + 4 < val.size());
 	size_t end = match_close_tag(val, pos);
-	Char& c = val[pos + 4];
+	// initial value of reference to non-const must be an lvalue
+	Char temp = val[pos + 4];
+	Char& c = temp;
 	swap(c, old);
 	if (end != String::npos && end + 5 < val.size()) {
 		val[end + 5] = c; // </kw-c>

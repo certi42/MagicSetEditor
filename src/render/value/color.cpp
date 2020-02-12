@@ -58,7 +58,8 @@ void ColorValueViewer::draw(RotatedDC& dc) {
 					style().width  - style().left_width - style().right_width,
 					style().height - style().top_width  - style().bottom_width
 				)));
-				dc.getDC().SetClippingRegion(r);
+				// Depreceated: Does this pass logical or screen coordinates?
+				dc.getDC().SetDeviceClippingRegion(r);
 			}
 			dc.DrawRoundedRectangle(style().getInternalRect(), style().radius);
 			if (clip) dc.getDC().DestroyClippingRegion();

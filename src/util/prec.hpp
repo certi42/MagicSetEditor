@@ -20,6 +20,8 @@
 #include <wx/wx.h>
 #include <wx/image.h>
 #include <wx/datetime.h>
+#include <wx/colour.h>
+#include <wx/bitmap.h>
 
 // Std headers
 #include <vector>
@@ -72,6 +74,16 @@ typedef wxDateTime DateTime;
 #if wxVERSION_NUMBER < 2811
 	#define SetDeviceClippingRegion SetClippingRegion
 #endif
+
+// #if !wxCHECK_VERSION(3,1,1)
+// namespace std {
+// 	template <> inline void iter_swap<wxString::iterator>(wxString::iterator i1, wxString::iterator i2){
+// 		wxUniCharRef r1 = *i1;
+// 		wxUniCharRef r2 = *i2;
+// 		std::swap(r1, r2);
+// 	}
+// }
+// #endif
 
 // ----------------------------------------------------------------------------- : Other aliasses
 

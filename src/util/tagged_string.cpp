@@ -637,7 +637,8 @@ bool is_space_like(Char c) {
 
 String curly_quotes(String str, bool curl) {
 	bool open = true, in_tag = false;
-	for(auto& c : str) {
+	for(size_t i = 0; i < str.size(); ++i) {
+		char c = str[i];
 		if (c == _('\'') || c == LEFT_SINGLE_QUOTE || c == RIGHT_SINGLE_QUOTE) {
 			c = curl ? (open ? LEFT_SINGLE_QUOTE : RIGHT_SINGLE_QUOTE) : _('\'');
 		} else if (c == _('\"') || c == LEFT_DOUBLE_QUOTE || c == RIGHT_DOUBLE_QUOTE) {
@@ -650,6 +651,7 @@ String curly_quotes(String str, bool curl) {
 			// Also allow double-nesting of quotes
 			open = is_space_like(c);
 		}
+		str[i] = c;
 	}
 	return str;
 }

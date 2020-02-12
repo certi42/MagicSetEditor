@@ -31,7 +31,7 @@ struct StatsComparator {
 		//return a->position_hint < b->position_hint;
 		int rval = (a->position_hint - b->position_hint);
 		if(rval == 0) {
-			rval = a->name - b->name;
+			rval = a->name.CompareTo(b->name);
 		}
 		return rval < 0;
 	}

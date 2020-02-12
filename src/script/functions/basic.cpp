@@ -337,8 +337,9 @@ SCRIPT_FUNCTION(to_sentence_case) {
 // reverse a string
 SCRIPT_FUNCTION(reverse_text) {
 	SCRIPT_PARAM_C(String, input);
-	reverse(input.begin(), input.end());
-	SCRIPT_RETURN(input);
+	std::string s = std::string(input.begin(), input.end());
+	reverse(s.begin(), s.end());
+	SCRIPT_RETURN(String(s));
 }
 
 // remove leading and trailing whitespace from a string
@@ -393,8 +394,9 @@ SCRIPT_FUNCTION(sort_text) {
 	SCRIPT_OPTIONAL_PARAM_C(String, order) {
 		SCRIPT_RETURN(spec_sort(order, input));
 	} else {
-		sort(input.begin(), input.end());
-		SCRIPT_RETURN(input);
+		std::string s = std::string(input.begin(), input.end());
+		sort(s.begin(), s.end());
+		SCRIPT_RETURN(String(s));
 	}
 }
 
@@ -490,12 +492,13 @@ ScriptValueP sort_script(Context& ctx, const ScriptValueP& list, ScriptValue& or
 	ScriptType list_t = list->type();
 	if (list_t == SCRIPT_STRING) {
 		// sort a string
-		String s = list->toString();
+		String wxs = list->toString();
+		std::string s = std::string(wxs.begin(), wxs.end());
 		sort(s.begin(), s.end());
 		if (remove_duplicates) {
 			s.erase( unique(s.begin(), s.end()), s.end() );
 		}
-		SCRIPT_RETURN(s);
+		SCRIPT_RETURN(String(s));
 	} else {
 		// are we sorting a set?
 		ScriptObject<Set*>* set = dynamic_cast<ScriptObject<Set*>*>(list.get());

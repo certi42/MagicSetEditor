@@ -292,7 +292,8 @@ class ScriptString : public ScriptValue {
 	}
 	virtual wxDateTime toDateTime() const {
 		wxDateTime date;
-		if (!date.ParseDateTime(value.c_str())) {
+		date.ParseDateTime(value.c_str());
+		if (!date.IsValid()) {
 			throw ScriptErrorConversion(value, typeName(), _TYPE_("date"));
 		}
 		return date;

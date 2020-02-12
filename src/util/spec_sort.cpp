@@ -122,7 +122,7 @@ void cycle_sort(const String& spec, String& input, String& ret) {
 	// count occurences of each char in spec
 	for(const auto& s : spec) {
 		UInt c = 0;
-		for(auto& i : input) {
+		for(auto i : input) {
 			if (s == i) {
 				i = REMOVED; // remove
 				c++;
@@ -161,7 +161,7 @@ void cycle_sort(const String& spec, String& input, String& ret) {
 /// Sort a string, keeping the characters in the original order
 /** Removed used characters from input! */
 void mixed_sort(const String& spec, String& input, String& ret) {
-	for(auto& c : input) {
+	for(auto c : input) {
 		if (spec.find(c) != String::npos) {
 			ret += c;
 			c = REMOVED;
@@ -225,7 +225,7 @@ void in_place_sort(const String& spec, String& input, String& ret) {
 	spec_sort(spec, input, result);
 	// restore into the same order as in 'input'
 	size_t pos_r = 0;
-	for(auto& c : input) {
+	for(auto c : input) {
 		if (c == REMOVED) {
 			if (pos_r < result.size()) {
 				ret += result.GetChar(pos_r++);
@@ -243,7 +243,7 @@ String spec_sort(const String& spec, String& input, String& ret) {
 	SpecIterator it(spec);
 	while(it.nextUntil(0)) {
 		if (it.escaped) {					// single character, escaped
-			for(auto& d : input) {
+			for(auto d : input) {
 				if (d == it.value) {
 					ret += d;
 					d = REMOVED;
@@ -299,7 +299,7 @@ String spec_sort(const String& spec, String& input, String& ret) {
 			in_place_sort(sub_spec, input, ret);
 		
 		} else if (it.keyword(_("any()"))) { // remaining input
-			for(auto& d : input) {
+			for(auto d : input) {
 				if (d != REMOVED) {
 					ret += d;
 					d = REMOVED;
@@ -313,14 +313,18 @@ String spec_sort(const String& spec, String& input, String& ret) {
 				String sub_spec = it.readRawParam(_(')'),_(' '));
 				spec_sort(sub_spec, input, ret);
 				// reverse this item
-				reverse(ret.begin() + before_ret_size, ret.end());
+				std::string s = std::string(ret.begin(), ret.end());
+				reverse(s.begin() + before_ret_size, s.end());
+				ret = String(s);
 			}
 			// re-reverse all items
-			reverse(ret.begin() + old_ret_size, ret.end());
+			std::string s = std::string(ret.begin(), ret.end());
+			reverse(s.begin() + old_ret_size, s.end());
+			ret = String(s);
 		
 		} else if (it.keyword(_("ordered("))) { // in spec order
 			while (it.nextUntil(_(')'))) {
-				for(auto& d : input) {
+				for(auto d : input) {
 					if (d == it.value) {
 						ret += d;
 						d = REMOVED;
@@ -328,7 +332,7 @@ String spec_sort(const String& spec, String& input, String& ret) {
 				}
 			}
 		} else {					// single char
-			for(auto& d : input) {
+			for(auto d : input) {
 				if (d == it.value) {
 					ret += d;
 					d = REMOVED;
