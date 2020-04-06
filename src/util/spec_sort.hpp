@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------------- : spec_sort
 
 /// Sort a string using a sort specification
-/** The specificatio can contain:
+/** The specification can contain:
  *   - a       = all 'a's go here
  *   - fun(A)  = different behaviour
  *   - [abc]   = mixed(abc)
@@ -32,7 +32,7 @@
  *                 2. has _('holes') early, a hole means a character that is in the specification
  *                    but not in the input
  *                 3. prefer the one that comes the earliest in the expression (a in this case)
- *   - compound(abc)    = the connect sting "abc" goes gere
+ *   - compound(abc)    = the connect string "abc" goes gere
  *   - pattern(.. sort) = sort the things matching the pattern using 'sort' and replace them in the pattern
  *
  *  example:

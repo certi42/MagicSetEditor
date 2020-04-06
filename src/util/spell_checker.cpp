@@ -26,8 +26,10 @@ SpellChecker& SpellChecker::get(const String& language) {
 			speller = SpellCheckerP(new SpellChecker((local_dir + aff_path).mb_str(),
 			                                         (local_dir + dic_path).mb_str()));
 		} else if (wxFileExists(global_dir + aff_path) && wxFileExists(global_dir + dic_path)) {
-			speller = SpellCheckerP(new SpellChecker((global_dir + aff_path).mb_str(),
-			                                         (global_dir + dic_path).mb_str()));
+            String affPath = (global_dir + aff_path).mb_str();
+            String dicPath = (global_dir + dic_path).mb_str();
+            speller = SpellCheckerP(new SpellChecker(affPath, dicPath));
+//			                                         (global_dir + dic_path).mb_str()));
 		} else {
 			throw Error(_("Dictionary not found for language: ") + language);
 		}
@@ -107,9 +109,8 @@ bool SpellChecker::convert_encoding(const String& word, CharBuffer& out) {
 
 bool SpellChecker::spell(const String& word) {
 	if (word.empty()) return true; // empty word is okay
-	CharBuffer str;
-	if (!convert_encoding(word,str)) return false;
-	return Hunspell::spell(str);
+    std::string str(word.begin(), word.end());
+    return Hunspell::spell(str);
 }
 
 bool SpellChecker::spell_with_punctuation(const String& word) {
@@ -120,15 +121,11 @@ bool SpellChecker::spell_with_punctuation(const String& word) {
 }
 
 void SpellChecker::suggest(const String& word, vector<String>& suggestions_out) {
-	CharBuffer str;
-	if (!convert_encoding(word,str)) return;
 	// call Hunspell
-	char** suggestions;
-	int num_suggestions = Hunspell::suggest(&suggestions, str);
-	// copy sugestions
-	for (int i = 0 ; i < num_suggestions ; ++i) {
-		suggestions_out.push_back(String(suggestions[i],encoding));
-		free(suggestions[i]);
-	}
-	free(suggestions);
+    std::string str(word.begin(), word.end());
+	vector<std::string> suggestions = Hunspell::suggest(str);
+    // copy suggestions
+    for(auto& s : suggestions) {
+        suggestions_out.push_back(String(s));
+    }
 }

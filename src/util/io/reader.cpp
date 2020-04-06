@@ -163,11 +163,12 @@ String read_utf8_line(wxInputStream& input, bool eat_bom, bool until_eof) {
 		buffer.push_back(c);
 	}
 	// convert to string
-	buffer.push_back('\0');
+//	buffer.push_back('\0');
 	size_t size = wxConvUTF8.MB2WC(nullptr, buffer.get(), 0);
-	if (size == size_t(-1)) {
-		throw ParseError(_("Invalid UTF-8 sequence"));
-	} else if (size == 0) {
+//	if (size == size_t(-1)) {
+//		throw ParseError(_("Invalid UTF-8 sequence"));
+//	} else
+	if (size == 0) {
 		return _("");
 	}
 	#ifdef UNICODE
@@ -201,9 +202,9 @@ String read_utf8_line(wxInputStream& input, bool eat_bom, bool until_eof) {
 		#else
 			for (size_t i = 0 ; i < size ; ++i) {
 				wchar_t wc = buf2[i];
-				if (wc < 0xFF) {
+				if (wc < 0xFF && wc > 0) {
 					result += (Char)wc;
-				} else {
+				} else if (wc >= 0xFF) {
 					// not valid in Latin1
 					result += '?';
 				}
