@@ -119,10 +119,10 @@ SCRIPT_FUNCTION(to_int) {
 			AColor c = input->toColor();
 			result = (c.Red() + c.Blue() + c.Green()) / 3;
 		} else if (t == SCRIPT_STRING) {
-			long l;
+			int i;
 			String str = input->toString();
-			if (str.ToLong(&l)) {
-				result = l;
+			if (to_int(str, &i)) {
+				result = i;
 			} else if (str.empty()) {
 				result = 0;
 			} else {

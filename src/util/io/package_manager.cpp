@@ -289,7 +289,8 @@ void PackageDirectory::installedPackages(vector<InstallablePackageP>& packages_o
 				(*it1)->check_status(*pack);
 				packages_out.push_back(intrusive(new InstallablePackage(intrusive(new PackageDescription(*pack)), *it1)));
 			} catch (const Error&) { db_changed = true; }
-			++it1, ++it2;
+			++it1;
+			++it2;
 		}
 	}
 	if (it1 != packages.end()) db_changed = true;

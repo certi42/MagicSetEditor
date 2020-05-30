@@ -369,7 +369,8 @@ void merge(InstallablePackages& list1, const InstallablePackages& list2) {
 			++it2;
 		} else {
 			(*it1)->merge(**it2);
-			++it1,++it2;
+			++it1;
+			++it2;
 		}
 	}
 	if (!add.empty()) {

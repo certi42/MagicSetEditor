@@ -109,7 +109,12 @@ bool SpellChecker::convert_encoding(const String& word, CharBuffer& out) {
 
 bool SpellChecker::spell(const String& word) {
 	if (word.empty()) return true; // empty word is okay
-    std::string str(word.begin(), word.end());
+//    std::string str(word.begin(), word.end());
+//    return Hunspell::spell(str);
+    CharBuffer str;
+    if(!convert_encoding(word, str)) {
+        return true; // just punctuation is wrong
+    }
     return Hunspell::spell(str);
 }
 
@@ -122,10 +127,20 @@ bool SpellChecker::spell_with_punctuation(const String& word) {
 
 void SpellChecker::suggest(const String& word, vector<String>& suggestions_out) {
 	// call Hunspell
-    std::string str(word.begin(), word.end());
-	vector<std::string> suggestions = Hunspell::suggest(str);
-    // copy suggestions
-    for(auto& s : suggestions) {
-        suggestions_out.push_back(String(s));
+//    std::string str(word.begin(), word.end());
+//	vector<std::string> suggestions = Hunspell::suggest(str);
+//    // copy suggestions
+//    for(auto& s : suggestions) {
+//        suggestions_out.push_back(String(s));
+//    }
+    CharBuffer str;
+    if (!convert_encoding(word,str)) return;
+    char** suggestions;
+    int num_suggestions = Hunspell::suggest(&suggestions, str);
+    // copy sugestions
+    for (int i = 0 ; i < num_suggestions ; ++i) {
+        suggestions_out.push_back(String(suggestions[i],encoding));
+        free(suggestions[i]);
     }
+    free(suggestions);
 }

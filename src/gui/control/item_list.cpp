@@ -186,8 +186,8 @@ void ItemList::refreshList(bool refresh_current_only) {
 
 void ItemList::sortBy(long column, bool ascending) {
 	// Change image in column header
-	long count = GetColumnCount();
-	for (long i = 0 ; i < count ; ++i) {
+	int count = GetColumnCount();
+	for (int i = 0 ; i < count ; ++i) {
 		if (i == column) {
 			SetColumnImage(i, sort_ascending ? 0 : 1); // arrow up/down
 		} else if (i == sort_by_column) {

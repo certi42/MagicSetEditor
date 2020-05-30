@@ -13,6 +13,17 @@
 
 using std::min;
 
+
+bool to_int(const String& str, int* i) {
+	long l = 0;
+	if(str.ToLong(&l)) {
+		*i = (int)l;
+		return true;
+	} else {
+		return false;
+	}
+}
+
 // ----------------------------------------------------------------------------- : Unicode
 
 String decodeUTF8BOM(const String& s) {

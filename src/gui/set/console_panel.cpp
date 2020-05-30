@@ -363,7 +363,7 @@ class HistoryTextCtrl : public wxTextCtrl {
 	
 	// browse history for strings that share the part before the cursor with the current value in the control
 	bool browse_history(int dir) {
-		int caret = GetInsertionPoint();
+		int caret = (int)GetInsertionPoint();
 		String to_match = GetValue().substr(0, caret);
 		while (history_pos+dir >= 0 && history_pos+dir < (int)history.size()) {
 			history_pos += dir;

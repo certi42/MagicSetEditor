@@ -25,7 +25,7 @@ String normalize_filename(const String& name) {
 
 String normalize_internal_filename(const String& name) {
 	String ret;
-	for(const auto& c : name) {
+	for(auto const c : name) {
 		if (c==_('\\')) ret += _('/');
 		else            ret += toLower(c);
 	}

@@ -41,6 +41,9 @@ typedef wxString String;
 
 /// The character type used
 typedef IF_UNICODE(wchar_t, char) Char;
+
+
+bool to_int(const String& str, int* i);
 	
 /// Decode a UTF8 string
 /** In non-unicode builds the input is considered to be an incorrectly encoded utf8 string.

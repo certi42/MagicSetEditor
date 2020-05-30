@@ -220,10 +220,10 @@ InputStreamP Package::openIn(const String& file) {
 		stream = shared(new BufferedFileInputStream(filename+_("/")+file));
 	} else if (wxFileExists(filename) && it != files.end() && it->second.zipEntry) {
         wxFileInputStream fileStream(filename);
-		wxFileOffset offset = it->second.zipEntry->GetOffset();
 		// a file in a zip archive
-        stream  = shared(new wxZipInputStream(fileStream));
-        stream->SeekI(offset);
+        wxZipInputStream* zipStream = new wxZipInputStream(this->fileStream);
+        zipStream->OpenEntry(*it->second.zipEntry);
+        stream = shared(zipStream);
         // somebody in wx thought seeking was no longer needed, it now only works with the 'compatability constructor'
         //stream = shared(new wxZipInputStream(filename, it->second.zipEntry->GetInternalName()));
 		//stream = static_pointer_cast<wxZipInputStream>(

@@ -293,7 +293,8 @@ Image EnlargeImage::generate(const Options& opt) const {
 		memcpy(data2 + 3*(dw + (y+dh)*w2), data1 + 3*y*w, 3*w); // copy a line
 	}
 	if (img.HasAlpha()) {
-		data1 = img.GetAlpha(), data2 = larger.GetAlpha();
+		data1 = img.GetAlpha();
+		data2 = larger.GetAlpha();
 		for (int y = 0 ; y < h ; ++y) {
 			memcpy(data2 + dw + (y+dh)*w2, data1 + y*w, w); // copy a line
 		}

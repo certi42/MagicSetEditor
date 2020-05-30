@@ -488,7 +488,7 @@ String ApprCardRecord::readString(wxDataInputStream& strm) {
 
 void ApprCardRecord::writeString(wxDataOutputStream& strm, const String& out) {
 	strm.Write16(UInt(out.size()));
-	for(const auto& c : out) {
+	for(const auto c : out) {
 		strm.Write8(c);
 	}
 }

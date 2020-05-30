@@ -39,8 +39,8 @@ CompareWhat  ScriptValue::compareAs(String& compare_str, void const*& compare_pt
 	return COMPARE_AS_STRING;
 }
 ScriptValueP ScriptValue::getMember(const String& name) const {
-	long index;
-	if (name.ToLong(&index)) {
+	int index;
+	if (to_int(name, &index)) {
 		return getIndex(index);
 	} else {
 		return delay_error(ScriptErrorNoMember(typeName(), name));
@@ -267,9 +267,9 @@ class ScriptString : public ScriptValue {
 		}
 	}
 	virtual int toInt() const {
-		long l;
-		if (value.ToLong(&l)) {
-			return l;
+		int i;
+		if (to_int(value, &i)) {
+			return i;
 		} else {
 			throw ScriptErrorConversion(value, typeName(), _TYPE_("integer"));
 		}

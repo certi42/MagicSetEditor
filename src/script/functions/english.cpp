@@ -115,8 +115,8 @@ String do_english_num(String input, String(*fun)(int)) {
 			size_t end = input.find_first_of(_('<'), start);
 			if (end != String::npos) {
 				String is = input.substr(start, end - start);
-				long i = 0;
-				if (is.ToLong(&i)) {
+				int i = 0;
+				if (to_int(is, &i)) {
 					if (i == 1) {
 						return _("<hint-1>") + substr_replace(input, start, end, fun(i));
 					} else {
@@ -127,9 +127,9 @@ String do_english_num(String input, String(*fun)(int)) {
 		}
 		return _("<hint-2>") + input;
 	} else {
-		long i = 0;
-		if (input.ToLong(&i)) {
-			return fun(i);
+		int i = 0;
+		if (to_int(input, &i)) {
+			return fun((int)i);
 		}
 		return input;
 	}

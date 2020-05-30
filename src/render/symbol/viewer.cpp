@@ -86,8 +86,25 @@ MemoryDCP getTempDC(DC& dc) {
 // Combine the temporary DCs used in the drawing with the main dc
 void combineBuffers(DC& dc, DC* borders, DC* interior) {
 	wxSize s = dc.GetSize();
+    
 	if (borders)  dc.Blit(0, 0, s.GetWidth(), s.GetHeight(), borders,  0, 0, wxOR);
-	if (interior) dc.Blit(0, 0, s.GetWidth(), s.GetHeight(), interior, 0, 0, wxAND_INVERT);
+    if (interior) {
+//        dc.Blit(0, 0, s.GetWidth(), s.GetHeight(), interior, 0, 0, wxAND_INVERT);
+        wxImage img = interior->GetAsBitmap().ConvertToImage();
+        wxImage src = dc.GetAsBitmap().ConvertToImage();
+        for(int i = 0; i < img.GetWidth(); ++i) {
+            for(int j = 0; j < img.GetHeight(); ++j) {
+                unsigned char r = 255 - src.GetRed(i, j);
+                unsigned char g = 255 - src.GetGreen(i, j);
+                unsigned char b = 255 - src.GetBlue(i, j);
+                unsigned char finalR = r & img.GetRed(i, j);
+                unsigned char finalG = g & img.GetGreen(i, j);
+                unsigned char finalB = b & img.GetBlue(i, j);
+                src.SetRGB(i, j, finalR, finalG, finalB);
+            }
+        }
+        dc.DrawBitmap(wxBitmap(src), 0, 0);
+    }
 }
 
 void SymbolViewer::draw(DC& dc) {

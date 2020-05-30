@@ -295,7 +295,7 @@ void DropDownList::redrawArrowOnParent() {
 
 void DropDownList::onPaint(wxPaintEvent&) {
 	wxBufferedPaintDC dc(this);
-	draw(dc);
+//	draw(dc);
 }
 
 void DropDownList::draw(DC& dc) {
